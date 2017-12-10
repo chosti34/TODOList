@@ -1,0 +1,65 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class InputCommandParser {
+    private static final int MATCH_DATA_GROUP_ID = 1;
+    private static final int FIRST_ELEMENT_ID = 0;
+
+    private Pattern pattern;
+    private HashMap<String, InputCommandType> commandTypeMap;
+
+    public InputCommandParser() {
+        pattern = Pattern.compile("([^\"]\\S*|\".*\"\\S*)\\s*");
+        commandTypeMap = new HashMap<String, InputCommandType>() {{
+            put("show", InputCommandType.SHOW);
+            put("exit", InputCommandType.EXIT);
+        }};
+    }
+
+    public InputCommand parse(final String input) {
+        final ArrayList<String> tokens = tokenize(input);
+        if (tokens.isEmpty()) {
+            throw new IllegalArgumentException("empty input");
+        }
+;
+        final InputCommandType type = commandTypeMap.get(tokens.get(FIRST_ELEMENT_ID));
+        if (type == null) {
+            throw new IllegalArgumentException("unknown command");
+        }
+
+        return getCommand(type, spliceToOnlyArguments(tokens));
+    }
+
+    private InputCommand getCommand(final InputCommandType type, final ArrayList<String> args) {
+        switch (type) {
+            case ADDLIST:
+                break;
+            case DELETELIST:
+                break;
+            case ADDTASK:
+                break;
+            case DELETETASK:
+                break;
+            case SHOW:
+                return new ShowCommand(args);
+            case EXIT:
+                return new ExitCommand(args);
+        }
+        return null;
+    }
+
+    private ArrayList<String> spliceToOnlyArguments(final ArrayList<String> fullCommandInput) {
+        return new ArrayList<String>(fullCommandInput.subList(1, fullCommandInput.size()));
+    }
+
+    private ArrayList<String> tokenize(final String input) {
+        ArrayList<String> matches = new ArrayList<>();
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            matches.add(matcher.group(MATCH_DATA_GROUP_ID));
+        }
+        return matches;
+    }
+}
