@@ -15,15 +15,19 @@ public class InputCommandParser {
         commandTypeMap = new HashMap<String, InputCommandType>() {{
             put("show", InputCommandType.SHOW);
             put("exit", InputCommandType.EXIT);
+            put("addlist", InputCommandType.ADDLIST);
+            put("addtask", InputCommandType.ADDTASK);
+            put("deletelist", InputCommandType.DELETELIST);
+            put("deletetask", InputCommandType.DELETETASK);
         }};
     }
 
-    public InputCommand parse(final String input) {
+    public InputCommand parse(final String input) throws Exception {
         final ArrayList<String> tokens = tokenize(input);
         if (tokens.isEmpty()) {
             throw new IllegalArgumentException("empty input");
         }
-;
+
         final InputCommandType type = commandTypeMap.get(tokens.get(FIRST_ELEMENT_ID));
         if (type == null) {
             throw new IllegalArgumentException("unknown command");
@@ -32,22 +36,23 @@ public class InputCommandParser {
         return getCommand(type, spliceToOnlyArguments(tokens));
     }
 
-    private InputCommand getCommand(final InputCommandType type, final ArrayList<String> args) {
+    private InputCommand getCommand(final InputCommandType type, final ArrayList<String> args) throws Exception {
         switch (type) {
             case ADDLIST:
-                break;
+                return new AddListCommand(args);
             case DELETELIST:
-                break;
+                return new DeleteListCommand(args);
             case ADDTASK:
-                break;
+                return new AddTaskCommand(args);
             case DELETETASK:
-                break;
+                return new DeleteTaskCommand(args);
             case SHOW:
                 return new ShowCommand(args);
             case EXIT:
                 return new ExitCommand(args);
+            default:
+                throw new Exception("default branch should be unreachable");
         }
-        return null;
     }
 
     private ArrayList<String> spliceToOnlyArguments(final ArrayList<String> fullCommandInput) {

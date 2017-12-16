@@ -8,15 +8,23 @@ public class TODOListManager {
         }
 
         public void show() {
-            System.out.println("show not implemented");
+            System.out.println("show is not implemented");
         }
 
         public void addTask() {
-
+            System.out.println("addtask is not implemented");
         }
 
         public void addTaskList() {
+            System.out.println("addlist is not implemented");
+        }
 
+        public void deleteTask() {
+            System.out.println("deletetask is not implemented");
+        }
+
+        public void deleteTaskList() {
+            System.out.println("deletelist is not implemented");
         }
     }
 
@@ -30,6 +38,9 @@ public class TODOListManager {
             command.execute(controller);
         } catch (IllegalArgumentException ex) {
             System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
