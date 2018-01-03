@@ -11,7 +11,7 @@ public class ExitCommand extends InputCommand {
     }
 
     @Override
-    public void execute(TODOListManager.Controller controller) {
+    public void execute(final TODOListManager.Controller controller) {
         controller.exit();
     }
 

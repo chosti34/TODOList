@@ -63,7 +63,7 @@ public class InputCommandParser {
         ArrayList<String> matches = new ArrayList<>();
         Matcher matcher = pattern.matcher(input);
         while (matcher.find()) {
-            matches.add(matcher.group(MATCH_DATA_GROUP_ID));
+            matches.add(matcher.group(MATCH_DATA_GROUP_ID).replaceAll("\"", ""));
         }
         return matches;
     }
