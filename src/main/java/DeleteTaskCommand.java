@@ -8,8 +8,13 @@ public class DeleteTaskCommand extends InputCommand {
     }
 
     @Override
-    public int getRequiredArgsCount() {
-        return 1;
+    public int getMinRequiredArgsCount() {
+        return 2;
+    }
+
+    @Override
+    public int getMaxOptionalArgsCount() {
+        return 2;
     }
 
     @Override
@@ -20,13 +25,8 @@ public class DeleteTaskCommand extends InputCommand {
     }
 
     @Override
-    public String getName() {
-        return "deletetask";
-    }
-
-    @Override
     public InputCommandType getType() {
-        return InputCommandType.DELETETASK;
+        return InputCommandType.DELETE_TASK;
     }
 
     @Override

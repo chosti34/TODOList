@@ -6,18 +6,18 @@ public class ShowCommand extends InputCommand {
     }
 
     @Override
-    public int getRequiredArgsCount() {
+    public int getMinRequiredArgsCount() {
+        return 0;
+    }
+
+    @Override
+    public int getMaxOptionalArgsCount() {
         return 0;
     }
 
     @Override
     public void execute(TODOListManager.Controller controller) {
-        controller.show();
-    }
-
-    @Override
-    public String getName() {
-        return "show";
+        controller.onShow();
     }
 
     @Override
@@ -27,6 +27,5 @@ public class ShowCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
-        assert args.size() == getRequiredArgsCount();
     }
 }

@@ -2,18 +2,24 @@ import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> taskList;
+    private String name;
     private int id;
     private int taskIdToInsert;
 
-    public TaskList(int id) {
+    public TaskList(final String name, int id) {
         taskList = new ArrayList<>();
         this.id = id;
+        this.name = name;
         taskIdToInsert = 1;
     }
 
-    public void addTask(final String text) {
+    public boolean addTask(final String text) {
+        if (hasTaskWithText(text)) {
+            return false;
+        }
         taskList.add(new Task(taskIdToInsert, text));
         ++taskIdToInsert;
+        return true;
     }
 
     public boolean deleteTask(int taskId) {
@@ -32,33 +38,24 @@ public class TaskList {
         return false;
     }
 
-    public boolean removeTask(int taskId) {
-        int taskIndexToDelete = -1;
-        for (int i = 0; i < taskList.size(); ++i) {
-            Task task = taskList.get(i);
-            if (task.getId() == taskId) {
-                taskIndexToDelete = i;
-            }
-        }
-        if (taskIndexToDelete != -1) {
-            taskList.remove(taskIndexToDelete);
-            return true;
-        }
-        return false;
-    }
-
     public int getId() {
         return id;
     }
 
-    public void print() {
-        if (taskList.isEmpty()) {
-            System.out.println("<empty>");
-        }
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Task> toArrayList() {
+        return taskList;
+    }
+
+    public boolean hasTaskWithText(final String text) {
         for (Task task : taskList) {
-            System.out.println("Task " + task.getId() + ". Text: \"" + task.getText() +
-                    "\". Status: " + task.getStatus().toString() + ".");
+            if (task.getText().equals(text)) {
+                return true;
+            }
         }
-        System.out.println();
+        return false;
     }
 }

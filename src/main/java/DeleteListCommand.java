@@ -8,7 +8,12 @@ public class DeleteListCommand extends InputCommand {
     }
 
     @Override
-    public int getRequiredArgsCount() {
+    public int getMinRequiredArgsCount() {
+        return 1;
+    }
+
+    @Override
+    public int getMaxOptionalArgsCount() {
         return 1;
     }
 
@@ -19,13 +24,8 @@ public class DeleteListCommand extends InputCommand {
     }
 
     @Override
-    public String getName() {
-        return "deletelist";
-    }
-
-    @Override
     public InputCommandType getType() {
-        return InputCommandType.DELETELIST;
+        return InputCommandType.DELETE_LIST;
     }
 
     @Override

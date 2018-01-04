@@ -3,56 +3,114 @@ import java.util.Scanner;
 
 public class TODOListManager {
     public class Controller {
-        public void exit() {
+        /**
+         * Команда для выхода из программы
+         */
+        public void onExit() {
             System.out.println("bye");
             running = false;
         }
 
-        public void show() {
-            for (TaskList list : taskLists) {
-                System.out.println("TaskList #" + list.getId() + ":");
-                list.print();
+        /**
+         * Команда для вывода списков задач с их содержимым в System.out
+         */
+        public void onShow() {
+            if (taskLists.isEmpty()) {
+                System.out.println("nothing to show...");
+                return;
+            }
+            for (TaskList taskList : taskLists) {
+                System.out.println("TaskList #" + taskList.getId() + " \"" + taskList.getName() + "\":");
+                ArrayList<Task> tasks = taskList.toArrayList();
+                if (tasks.isEmpty()) {
+                    System.out.println("\tempty...");
+                    continue;
+                }
+                for (Task task : tasks) {
+                    System.out.println("\tTask " + task.getId() + ". Text: \"" + task.getText() + "\". Status: " + task.getStatus().toString() + ".");
+                }
             }
         }
 
-        public void addTask(final String text) {
+        /**
+         * Обработчик для команды `help`
+         */
+        public void onHelp() {
+            InputCommandType[] commandTypes = InputCommandType.values();
+            if (commandTypes.length == 0) {
+                System.out.println("There is no available commands. Developers are too lazy!");
+                return;
+            }
+            System.out.println("List of available commands:");
+            int index = 1;
+            for (InputCommandType commandType : commandTypes) {
+                System.out.println(index + ". " + commandType.toString() + ". " + commandType.getHelpMessage() + ".");
+                ++index;
+            }
+        }
+
+        /**
+         * Добавляет задачу в последний добавленный список, если таковой имеется.
+         * Выводит в System.out информацию о выполненной операции
+         */
+        public void addTaskToLastInsertedList(final String text) {
             if (taskLists.isEmpty()) {
                 System.out.println("Error: no any TaskList to insert at");
                 return;
             }
             TaskList lastInsertedTaskList = taskLists.get(taskLists.size() - 1);
-            lastInsertedTaskList.addTask(text);
-            System.out.println("Task \"" + text + "\" added to TaskList #" + lastInsertedTaskList.getId());
+            if (lastInsertedTaskList.addTask(text)) {
+                System.out.println("Task \"" + text + "\" added to TaskList #" + lastInsertedTaskList.getId());
+            } else {
+                System.out.println("Error: TaskList #" + lastInsertedTaskList.getId() + " already have task with text \"" + text + "\"");
+            }
         }
 
+        /**
+         * Добавляет задачу в список с заданным идентификатором listId, если таковой имеется.
+         * Выводит в System.out информацию о выполненной операции
+         */
         public void addTask(final String text, int listId) {
             TaskList list = getListById(listId);
             if (list == null) {
                 System.out.println("Error: TaskList #" + listId + " doesn't exists");
                 return;
             }
-            list.addTask(text);
+            if (list.addTask(text)) {
+                System.out.println("Task \"" + text + "\" added to TaskList #" + list.getId());
+            } else {
+                System.out.println("Error: TaskList #" + list.getId() + " already have task with text \"" + text + "\"");
+            }
         }
 
-        public void addTaskList() {
-            taskLists.add(new TaskList(listIdToInsert));
-            System.out.println("TaskList #" + listIdToInsert + " added");
+        /**
+         * Команда для добавления нового списка задач
+         */
+        public void addTaskList(final String name) {
+            taskLists.add(new TaskList(name, listIdToInsert));
+            System.out.println("TaskList #" + listIdToInsert + " \"" + taskLists.get(taskLists.size() - 1).getName() + "\" added");
             ++listIdToInsert;
         }
 
+        /**
+         * Удаление задачи с заданным taskId из списка с идентификатором listId
+         */
         public void deleteTask(int taskId, int listId) {
             TaskList list = getListById(listId);
             if (list == null) {
                 System.out.println("TaskList #" + listId + " not found");
                 return;
             }
-            if (list.removeTask(taskId)) {
+            if (list.deleteTask(taskId)) {
                 System.out.println("Task " + taskId + " removed from TaskList #" + listId);
             } else {
                 System.out.println("Task " + taskId + " not found at TaskList #" + listId);
             }
         }
 
+        /**
+         * Удаление списка задач с заданным идентификатором
+         */
         public void deleteTaskList(int listId) {
             TaskList taskList = getListById(listId);
             if (taskList == null) {
@@ -60,7 +118,7 @@ public class TODOListManager {
                 return;
             }
             taskLists.remove(taskList);
-            System.out.println("TaskList #" + taskList.getId() + " deleted successfully");
+            System.out.println("TaskList \"" + taskList.getName() + "\" #" + taskList.getId() + " deleted successfully");
         }
     }
 
@@ -79,6 +137,7 @@ public class TODOListManager {
     }
 
     public void doMainLoop() {
+        System.out.println("Welcome to TODO-List! Please, write some commands...\nOr type `help` for help.");
         Scanner scanner = new Scanner(System.in);
         while (running) {
             System.out.print("> ");

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
-public class ExitCommand extends InputCommand {
-    public ExitCommand(final ArrayList<String> args) {
+public class HelpCommand extends InputCommand {
+    public HelpCommand(final ArrayList<String> args) {
         super(args);
     }
 
@@ -17,16 +17,15 @@ public class ExitCommand extends InputCommand {
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
-        controller.onExit();
+        controller.onHelp();
     }
 
     @Override
     public InputCommandType getType() {
-        return InputCommandType.EXIT;
+        return InputCommandType.HELP;
     }
 
     @Override
-    protected void setArguments(final ArrayList<String> args) {
-        assert args.size() == getMinRequiredArgsCount();
+    protected void setArguments(ArrayList<String> args) {
     }
 }
