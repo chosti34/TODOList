@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class ShowCommand extends InputCommand {
     public ShowCommand(final ArrayList<String> args) {
         super(args);
+        setArguments(args);
     }
 
     @Override

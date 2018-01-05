@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class HelpCommand extends InputCommand {
     public HelpCommand(final ArrayList<String> args) {
         super(args);
+        setArguments(args);
     }
 
     @Override

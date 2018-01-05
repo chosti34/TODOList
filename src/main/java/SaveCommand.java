@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
-public class AddListCommand extends InputCommand {
-    private ArrayList<String> args;
+public class SaveCommand extends InputCommand {
+    private String filePath;
 
-    public AddListCommand(final ArrayList<String> args) {
+    public SaveCommand(final ArrayList<String> args) {
         super(args);
         setArguments(args);
     }
@@ -20,16 +20,16 @@ public class AddListCommand extends InputCommand {
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
-        controller.addTaskList(args.get(0));
+        controller.save(filePath);
     }
 
     @Override
     public InputCommandType getType() {
-        return InputCommandType.ADD_LIST;
+        return InputCommandType.SAVE;
     }
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
-        this.args = args;
+        filePath = args.get(0);
     }
 }

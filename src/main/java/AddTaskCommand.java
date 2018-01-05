@@ -1,14 +1,13 @@
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class AddTaskCommand extends InputCommand {
     private ArrayList<String> args;
-    private Optional<Integer> listId;
+    private Integer listId;
     private String text;
 
     public AddTaskCommand(final ArrayList<String> args) {
         super(args);
-        listId = Optional.empty();
+        setArguments(args);
     }
 
     @Override
@@ -23,8 +22,8 @@ public class AddTaskCommand extends InputCommand {
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
-        if (listId.isPresent()) {
-            controller.addTask(text, listId.get());
+        if (listId != null) {
+            controller.addTask(text, listId);
             return;
         }
         controller.addTaskToLastInsertedList(text);
@@ -37,9 +36,9 @@ public class AddTaskCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
-        this.text = args.get(0);
+        text = args.get(0);
         if (args.size() > 1) {
-            this.listId = Optional.of(Integer.parseUnsignedInt(args.get(1)));
+            listId = Integer.parseUnsignedInt(args.get(1));
         }
     }
 }

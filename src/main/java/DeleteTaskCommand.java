@@ -5,6 +5,7 @@ public class DeleteTaskCommand extends InputCommand {
 
     public DeleteTaskCommand(final ArrayList<String> args) {
         super(args);
+        setArguments(args);
     }
 
     @Override

@@ -5,6 +5,7 @@ public class DeleteListCommand extends InputCommand {
 
     public DeleteListCommand(final ArrayList<String> args) {
         super(args);
+        setArguments(args);
     }
 
     @Override

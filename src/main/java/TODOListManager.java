@@ -120,23 +120,33 @@ public class TODOListManager {
             taskLists.remove(taskList);
             System.out.println("TaskList \"" + taskList.getName() + "\" #" + taskList.getId() + " deleted successfully");
         }
+
+        public void save(final String path) {
+            try {
+                TaskListsSerializer.serialize(taskLists, path);
+                System.out.println("All task lists has been saved to " + path);
+            } catch (Exception ex) {
+                System.out.println("Error: failed to save tasks - " + ex.getMessage());
+            }
+        }
+
+        public void load(final String path) {
+            try {
+                taskLists = TaskListsReader.read(path);
+                System.out.println("All task lists loaded from " + path);
+            } catch (Exception ex) {
+                System.out.println("Error: failed to load tasks - " + ex.getMessage());
+            }
+        }
     }
 
-    private InputCommandParser parser;
-    private boolean running;
-    private Controller controller;
-    private int listIdToInsert;
-    private ArrayList<TaskList> taskLists;
+    private InputCommandParser parser = new InputCommandParser();
+    private boolean running = true;
+    private Controller controller = new Controller();
+    private int listIdToInsert = 1;
+    private ArrayList<TaskList> taskLists = new ArrayList<>();
 
-    public TODOListManager() {
-        parser = new InputCommandParser();
-        running = true;
-        controller = new Controller();
-        listIdToInsert = 1;
-        taskLists = new ArrayList<>();
-    }
-
-    public void doMainLoop() {
+    public void doMainLoop() throws Exception {
         System.out.println("Welcome to TODO-List! Please, write some commands...\nOr type `help` for help.");
         Scanner scanner = new Scanner(System.in);
         while (running) {

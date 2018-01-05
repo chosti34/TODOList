@@ -43,6 +43,28 @@ public enum InputCommandType {
         }
     },
 
+    SAVE {
+        @Override
+        public String toString() {
+            return "Save";
+        }
+
+        public String getHelpMessage() {
+            return "Usage: save <file path>";
+        }
+    },
+
+    LOAD {
+        @Override
+        public String toString() {
+            return "Load";
+        }
+
+        public String getHelpMessage() {
+            return "Usage: load <file path>";
+        }
+    },
+
     SHOW {
         @Override
         public String toString() {

@@ -13,7 +13,6 @@ public abstract class InputCommand {
                             getMaxOptionalArgsCount(),
                             args.size()));
         }
-        setArguments(args);
     }
 
     public abstract int getMinRequiredArgsCount();
