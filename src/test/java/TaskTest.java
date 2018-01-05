@@ -33,5 +33,4 @@ public class TaskTest {
         task.setStatus(TaskStatus.DONE);
         assertEquals(TaskStatus.DONE, task.getStatus());
     }
-
 }

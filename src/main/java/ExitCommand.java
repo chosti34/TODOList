@@ -27,6 +27,5 @@ public class ExitCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
-        assert args.size() == getMinRequiredArgsCount();
     }
 }

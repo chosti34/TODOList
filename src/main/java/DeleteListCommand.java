@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class DeleteListCommand extends InputCommand {
-    private ArrayList<String> args;
+    private int listId;
 
     public DeleteListCommand(final ArrayList<String> args) {
         super(args);
@@ -20,7 +20,6 @@ public class DeleteListCommand extends InputCommand {
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
-        int listId = Integer.parseUnsignedInt(args.get(0));
         controller.deleteTaskList(listId);
     }
 
@@ -31,6 +30,6 @@ public class DeleteListCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
-        this.args = args;
+        listId = Integer.parseUnsignedInt(args.get(0));
     }
 }

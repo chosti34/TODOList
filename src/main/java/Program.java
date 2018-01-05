@@ -3,7 +3,7 @@ public class Program {
 
     public static void main(String[] args) throws Exception {
         try {
-            manager.doMainLoop();
+            manager.doMainLoop(System.in);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }

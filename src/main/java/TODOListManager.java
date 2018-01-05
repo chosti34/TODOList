@@ -1,3 +1,6 @@
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -146,9 +149,13 @@ public class TODOListManager {
     private int listIdToInsert = 1;
     private ArrayList<TaskList> taskLists = new ArrayList<>();
 
-    public void doMainLoop() throws Exception {
+    public Controller getController() {
+        return controller;
+    }
+
+    public void doMainLoop(InputStream stream) throws Exception {
         System.out.println("Welcome to TODO-List! Please, write some commands...\nOr type `help` for help.");
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(stream);
         while (running) {
             System.out.print("> ");
             if (scanner.hasNextLine()) {

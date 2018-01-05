@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class TaskListsReader {
     public static ArrayList<TaskList> read(final String filePath) throws Exception {
         File file = new File(filePath);
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(file);

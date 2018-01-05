@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class AddListCommand extends InputCommand {
-    private ArrayList<String> args;
+    private String listName;
 
     public AddListCommand(final ArrayList<String> args) {
         super(args);
@@ -20,7 +20,7 @@ public class AddListCommand extends InputCommand {
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
-        controller.addTaskList(args.get(0));
+        controller.addTaskList(listName);
     }
 
     @Override
@@ -30,6 +30,6 @@ public class AddListCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
-        this.args = args;
+        listName = args.get(0);
     }
 }

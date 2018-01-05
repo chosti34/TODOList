@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class AddTaskCommand extends InputCommand {
-    private ArrayList<String> args;
     private Integer listId;
     private String text;
 

@@ -40,5 +40,4 @@ public class TaskListTest {
         taskList.addTask("text");
         assertEquals(true, taskList.hasTaskWithText("text"));
     }
-
 }
