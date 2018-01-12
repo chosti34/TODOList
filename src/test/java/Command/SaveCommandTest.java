@@ -14,7 +14,7 @@ public class SaveCommandTest {
 
     @Test
     public void getMinRequiredArgsCount() throws Exception {
-        assertEquals(1, command.getMinRequiredArgsCount());
+        assertEquals(0, command.getMinRequiredArgsCount());
     }
 
     @Test

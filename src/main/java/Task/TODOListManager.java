@@ -10,7 +10,9 @@ import Task.TaskListsReader;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.io.File;
 
 public class TODOListManager {
     public class Controller {
@@ -19,6 +21,7 @@ public class TODOListManager {
          */
         public boolean onExit() {
             System.out.println("bye");
+            controller.save("lists");
             running = false;
             return true;
         }
@@ -43,6 +46,55 @@ public class TODOListManager {
                 }
             }
             return true;
+        }
+
+        public boolean onShowList(int listId) {
+            if (taskLists.isEmpty()) {
+                System.out.println("nothing to show...");
+                return true;
+            }
+            for (TaskList taskList : taskLists) {
+                if (listId == taskList.getId())
+                {
+                    System.out.println("TaskList #" + taskList.getId() + " \"" + taskList.getName() + "\":");
+                    ArrayList<Task> tasks = taskList.toArrayList();
+                    if (tasks.isEmpty()) {
+                        System.out.println("\tempty...");
+                        return true;
+                    }
+                    for (Task task : tasks) {
+                        System.out.println("\tTask " + task.getId() + ". Text: \"" + task.getText() + "\". Status: " + task.getStatus().toString() + ".");
+                    }
+                    return true;
+                }
+            }
+            System.out.println("TaskList #" + listId + " not found");
+            return false;
+        }
+
+        public boolean onShowList(final String name) {
+            if (taskLists.isEmpty()) {
+                System.out.println("nothing to show...");
+                return true;
+            }
+            for (TaskList taskList : taskLists) {
+                if (name.equals(taskList.getName()))
+                {
+                    System.out.println("TaskList #" + taskList.getId() + " \"" + taskList.getName() + "\":");
+                    ArrayList<Task> tasks = taskList.toArrayList();
+                    if (tasks.isEmpty()) {
+                        System.out.println("\tempty...");
+                        return true;
+                    }
+                    for (Task task : tasks) {
+                        System.out.println("\tTask " + task.getId() + ". Text: \"" + task.getText() + "\". Status: " + task.getStatus().toString() + ".");
+                    }
+                    return true;
+                }
+
+            }
+            System.out.println("TaskList \"" + name + "\" not found");
+            return false;
         }
 
         /**
@@ -105,6 +157,12 @@ public class TODOListManager {
          * Команда для добавления нового списка задач
          */
         public boolean addTaskList(final String name) {
+            for (TaskList list : taskLists) {
+                if (name.equals(list.getName())) {
+                    System.out.println("Error: TaskList named \"" + list.getName() + "\" already exists!");
+                    return false;
+                }
+            }
             taskLists.add(new TaskList(name, listIdToInsert));
             System.out.println("TaskList #" + listIdToInsert + " \"" + taskLists.get(taskLists.size() - 1).getName() + "\" added");
             ++listIdToInsert;
@@ -198,27 +256,46 @@ public class TODOListManager {
             return true;
         }
 
-        public boolean save(final String path) {
-            try {
-                TaskListsSerializer.serialize(taskLists, path);
-                System.out.println("All task lists has been saved to " + path);
-                return true;
-            } catch (Exception ex) {
-                System.out.println("Error: failed to save tasks - " + ex.getMessage());
-                return false;
+        public boolean save(final String dir) {
+            for (TaskList list: taskLists) {
+                try {
+                    String path = dir + "/" + list.getName() + ".xml";
+                    TaskListsSerializer.serialize(list, path);
+                } catch (Exception ex) {
+                    System.out.println("Error: failed to save tasks - " + ex.getMessage());
+                    return false;
+                }
             }
+            System.out.println("All task lists has been saved in folder: " + dir);
+            return true;
         }
 
         public boolean load(final String path) {
-            try {
-                taskLists = TaskListsReader.read(path);
-                System.out.println("All task lists loaded from " + path);
-                return true;
-            } catch (Exception ex) {
-                System.out.println("Error: failed to load tasks - " + ex.getMessage());
-                return false;
+            File F = new File(path);
+            File[] fList = F.listFiles();
+            if (fList == null) {
+                File tempFile = new File(path);
+                tempFile.mkdir();
+                fList = tempFile.listFiles();
+                System.out.println("Path not not exists. Created path: " + path);
             }
+            for(int i = 0; i < fList.length; i++)
+            {
+                if(fList[i].isFile()) {
+                    try {
+                        taskLists.add(TaskListsReader.read(path +"/"+ fList[i].getName()));
+                        ++listIdToInsert;
+                        System.out.println(path +"/"+ fList[i].getName());
+                    } catch (Exception ex) {
+                        System.out.println("Error: failed to load tasks - " + ex.getMessage());
+                        return false;
+                    }
+                }
+            }
+            System.out.println("All task lists loaded from " + path);
+            return  true;
         }
+
     }
 
     private InputCommandParser parser = new InputCommandParser();

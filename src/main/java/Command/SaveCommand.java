@@ -14,7 +14,7 @@ public class SaveCommand extends InputCommand {
 
     @Override
     public int getMinRequiredArgsCount() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -24,6 +24,10 @@ public class SaveCommand extends InputCommand {
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
+        if (filePath == null) {
+            controller.save("lists");
+            return;
+        }
         controller.save(filePath);
     }
 
@@ -34,6 +38,9 @@ public class SaveCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
+        if (args.isEmpty()) {
+            return;
+        }
         filePath = args.get(0);
     }
 }

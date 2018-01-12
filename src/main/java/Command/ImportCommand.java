@@ -4,17 +4,17 @@ import Task.TODOListManager;
 
 import java.util.ArrayList;
 
-public class LoadCommand extends InputCommand {
+public class ImportCommand extends InputCommand {
     private String filePath;
 
-    public LoadCommand(final ArrayList<String> args) {
+    public ImportCommand(final ArrayList<String> args) {
         super(args);
         setArguments(args);
     }
 
     @Override
     public int getMinRequiredArgsCount() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -24,16 +24,23 @@ public class LoadCommand extends InputCommand {
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
+        if (filePath == null) {
+            controller.load("lists");
+            return;
+        }
         controller.load(filePath);
     }
 
     @Override
     public InputCommandType getType() {
-        return InputCommandType.LOAD;
+        return InputCommandType.IMPORT;
     }
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
+        if (args.isEmpty()) {
+            return;
+        }
         filePath = args.get(0);
     }
 }

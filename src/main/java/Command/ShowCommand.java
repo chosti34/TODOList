@@ -5,6 +5,8 @@ import Task.TODOListManager;
 import java.util.ArrayList;
 
 public class ShowCommand extends InputCommand {
+    private String listName;
+    private Integer listId;
     public ShowCommand(final ArrayList<String> args) {
         super(args);
         setArguments(args);
@@ -17,11 +19,18 @@ public class ShowCommand extends InputCommand {
 
     @Override
     public int getMaxOptionalArgsCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public void execute(TODOListManager.Controller controller) {
+        if (listId != null) {
+            controller.onShowList(listId.intValue());
+            return;
+        } else  if (listName != null) {
+            controller.onShowList(listName);
+            return;
+        }
         controller.onShow();
     }
 
@@ -32,5 +41,13 @@ public class ShowCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
+        if (args.isEmpty()) {
+            return;
+        }
+        try {
+            listId = Integer.parseUnsignedInt(args.get(0));
+        } catch (Exception ex) {
+            listName = args.get(0);
+        }
     }
 }

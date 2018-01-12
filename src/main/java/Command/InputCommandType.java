@@ -97,15 +97,15 @@ public enum InputCommandType {
         }
     },
 
-    LOAD {
+    IMPORT {
         @Override
         public String toString() {
-            return "Load";
+            return "Import";
         }
 
         @Override
         public String getHelpMessage() {
-            return "Usage: Load <FilePath>";
+            return "Usage: Import [<FilePath>]";
         }
     },
 

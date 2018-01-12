@@ -19,7 +19,7 @@ public class InputCommandParser {
             put("help", InputCommandType.HELP);
             put("exit", InputCommandType.EXIT);
             put("save", InputCommandType.SAVE);
-            put("load", InputCommandType.LOAD);
+            put("import", InputCommandType.IMPORT);
             put("addlist", InputCommandType.ADD_LIST);
             put("addtask", InputCommandType.ADD_TASK);
             put("deletelist", InputCommandType.DELETE_LIST);
@@ -68,8 +68,8 @@ public class InputCommandParser {
                 return new ExitCommand(args);
             case SAVE:
                 return new SaveCommand(args);
-            case LOAD:
-                return new LoadCommand(args);
+            case IMPORT:
+                return new ImportCommand(args);
             default:
                 throw new Exception("default branch should be unreachable");
         }

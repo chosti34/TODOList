@@ -19,7 +19,7 @@ public class ShowCommandTest {
 
     @Test
     public void getMaxOptionalArgsCount() throws Exception {
-        assertEquals(0, command.getMaxOptionalArgsCount());
+        assertEquals(1, command.getMaxOptionalArgsCount());
     }
 
     @Test

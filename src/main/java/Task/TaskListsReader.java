@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class TaskListsReader {
-    public static ArrayList<TaskList> read(final String filePath) throws Exception {
+    public static TaskList read(final String filePath) throws Exception {
         File file = new File(filePath);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -19,27 +19,22 @@ public class TaskListsReader {
 
         document.getDocumentElement().normalize();
 
-        ArrayList<TaskList> taskLists = new ArrayList<>();
+
         NodeList nList = document.getElementsByTagName("TaskList");
+        assert nList.getLength() == 1;
+        Element taskListElement = (Element)nList.item(0);
+        TaskList taskList = new TaskList(taskListElement.getAttribute("name"), Integer.parseUnsignedInt(taskListElement.getAttribute("id")));
+        NodeList tasks = taskListElement.getChildNodes();
+        for (int j = 0; j < tasks.getLength(); ++j) {
+            Node taskNode = tasks.item(j);
 
-        for (int i = 0; i < nList.getLength(); ++i) {
-            Element taskListElement = (Element)nList.item(i);
-
-            TaskList taskList = new TaskList(taskListElement.getAttribute("name"), Integer.parseUnsignedInt(taskListElement.getAttribute("id")));
-            taskLists.add(taskList);
-
-            NodeList tasks = taskListElement.getChildNodes();
-            for (int j = 0; j < tasks.getLength(); ++j) {
-                Node taskNode = tasks.item(j);
-                if (taskNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element taskNodeElement = (Element)taskNode;
-                    Task task = new Task(Integer.parseUnsignedInt(taskNodeElement.getAttribute("id")), taskNodeElement.getTextContent());
-                    task.setStatus(toStatus(taskNodeElement.getAttribute("status")));
-                    taskList.toArrayList().add(task);
-                }
+            if (taskNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element taskNodeElement = (Element)taskNode;
+                taskList.addTask(taskNodeElement.getTextContent());
+                taskList.toArrayList().get(taskList.toArrayList().size() - 1).setStatus(toStatus(taskNodeElement.getAttribute("status")));
             }
         }
-        return taskLists;
+        return taskList;
     }
 
     private static TaskStatus toStatus(final String str) throws Exception {
@@ -51,7 +46,7 @@ public class TaskListsReader {
             case "cancelled":
                 return TaskStatus.CANCELLED;
             default:
-                throw new Exception("error reading task status");
+                throw new Exception("error reading task status " + str);
         }
     }
 }

@@ -1,7 +1,5 @@
 package Command;
 
-import Command.InputCommandType;
-import Command.LoadCommand;
 import Task.TODOListManager;
 import org.junit.Test;
 
@@ -9,12 +7,12 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class LoadCommandTest {
-    private LoadCommand command = new LoadCommand(new ArrayList<String>() {{ add("target/generated-sources/path"); }});
+public class ImportCommandTest {
+    private ImportCommand command = new ImportCommand(new ArrayList<String>() {{ add("lists"); }});
 
     @Test
     public void getMinRequiredArgsCount() throws Exception {
-        assertEquals(1, command.getMinRequiredArgsCount());
+        assertEquals(0, command.getMinRequiredArgsCount());
     }
 
     @Test
@@ -29,7 +27,7 @@ public class LoadCommandTest {
 
     @Test
     public void getType() throws Exception {
-        assertEquals(InputCommandType.LOAD, command.getType());
+        assertEquals(InputCommandType.IMPORT, command.getType());
     }
 
     @Test
