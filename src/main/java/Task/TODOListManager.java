@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.io.File;
+import java.nio.file.Files;
 
 public class TODOListManager {
     public class Controller {
@@ -270,7 +271,7 @@ public class TODOListManager {
             return true;
         }
 
-        public boolean load(final String path) {
+        public boolean importFromDirectory(final String path) {
             File F = new File(path);
             File[] fList = F.listFiles();
             if (fList == null) {
@@ -283,20 +284,39 @@ public class TODOListManager {
             {
                 if(fList[i].isFile()) {
                     try {
-                        taskLists.add(TaskListsReader.read(path +"/"+ fList[i].getName()));
-                        ++listIdToInsert;
-                        System.out.println(path +"/"+ fList[i].getName());
+                        TaskList list = TaskListsReader.read(path +"/"+ fList[i].getName());
+                        TaskList tmpName = isListExists(list.getName());
+                        TaskList tmpId = getListById(list.getId());
+                        if (tmpName == null && tmpId == null) {
+                            taskLists.add(TaskListsReader.read(path +"/"+ fList[i].getName()));
+                            ++listIdToInsert;
+                        }
                     } catch (Exception ex) {
-                        System.out.println("Error: failed to load tasks - " + ex.getMessage());
+                        System.out.println("Error: failed to import tasks - " + ex.getMessage());
                         return false;
                     }
                 }
             }
-            System.out.println("All task lists loaded from " + path);
+            System.out.println("All task lists imported from " + path);
             return  true;
         }
 
+        public boolean importFromFile(final String path) {
+            try {
+                taskLists.add(TaskListsReader.read(path));
+                ++listIdToInsert;
+            } catch (Exception ex) {
+                System.out.println("Error: failed to import tasks - " + ex.getMessage());
+                return false;
+            }
+            System.out.println("List imported " + path);
+            return true;
+
+        }
+
     }
+
+
 
     private InputCommandParser parser = new InputCommandParser();
     private boolean running = true;
@@ -341,4 +361,14 @@ public class TODOListManager {
         }
         return null;
     }
+
+    private TaskList isListExists(final String name) {
+        for (TaskList list : taskLists) {
+            if (name.equals(list.getName())) {
+                return list;
+            }
+        }
+        return null;
+    }
+
 }

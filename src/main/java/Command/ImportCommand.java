@@ -3,6 +3,9 @@ package Command;
 import Task.TODOListManager;
 
 import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 public class ImportCommand extends InputCommand {
     private String filePath;
@@ -25,10 +28,15 @@ public class ImportCommand extends InputCommand {
     @Override
     public void execute(final TODOListManager.Controller controller) {
         if (filePath == null) {
-            controller.load("lists");
-            return;
+            controller.importFromDirectory("lists");
+        } else {
+            Path path = FileSystems.getDefault().getPath(filePath);
+            if (Files.isDirectory(path)) {
+                controller.importFromDirectory(filePath);
+            } else {
+                controller.importFromFile(filePath);
+            }
         }
-        controller.load(filePath);
     }
 
     @Override
