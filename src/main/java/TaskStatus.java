@@ -1,5 +1,3 @@
-package Task;
-
 public enum TaskStatus {
     IN_PROGRESS {
         @Override

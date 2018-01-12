@@ -1,28 +1,23 @@
-package Command;
-
-import Task.TODOListManager;
-
 import java.util.ArrayList;
 
 public class ShowCommand extends InputCommand {
     public ShowCommand(final ArrayList<String> args) {
         super(args);
-        setArguments(args);
     }
 
     @Override
-    public int getMinRequiredArgsCount() {
-        return 0;
-    }
-
-    @Override
-    public int getMaxOptionalArgsCount() {
+    public int getRequiredArgsCount() {
         return 0;
     }
 
     @Override
     public void execute(TODOListManager.Controller controller) {
-        controller.onShow();
+        controller.show();
+    }
+
+    @Override
+    public String getName() {
+        return "show";
     }
 
     @Override
@@ -32,5 +27,6 @@ public class ShowCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
+        assert args.size() == getRequiredArgsCount();
     }
 }

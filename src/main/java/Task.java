@@ -1,5 +1,3 @@
-package Task;
-
 public class Task {
     private TaskStatus status;
     private String text;
