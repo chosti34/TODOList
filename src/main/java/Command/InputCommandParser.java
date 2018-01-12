@@ -1,3 +1,5 @@
+package Command;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -11,15 +13,20 @@ public class InputCommandParser {
     private HashMap<String, InputCommandType> commandTypeMap;
 
     public InputCommandParser() {
-        pattern = Pattern.compile("([^\"]\\S*|\".*\"\\S*)\\s*");
+        pattern = Pattern.compile("([^\"]\\S*|\".*\")\\s*");
         commandTypeMap = new HashMap<String, InputCommandType>() {{
             put("show", InputCommandType.SHOW);
+            put("help", InputCommandType.HELP);
             put("exit", InputCommandType.EXIT);
-            put("addlist", InputCommandType.ADDLIST);
-            put("addtask", InputCommandType.ADDTASK);
-            put("deletelist", InputCommandType.DELETELIST);
-            put("deletetask", InputCommandType.DELETETASK);
-            put("edittask", InputCommandType.EDITTASK);
+            put("save", InputCommandType.SAVE);
+            put("import", InputCommandType.IMPORT);
+            put("addlist", InputCommandType.ADD_LIST);
+            put("addtask", InputCommandType.ADD_TASK);
+            put("deletelist", InputCommandType.DELETE_LIST);
+            put("deletetask", InputCommandType.DELETE_TASK);
+            put("edittaskstatus", InputCommandType.EDIT_TASK_STATUS);
+            put("edittasktext", InputCommandType.EDIT_TASK_TEXT);
+            put("editlistname", InputCommandType.EDIT_LIST_NAME);
         }};
     }
 
@@ -29,7 +36,7 @@ public class InputCommandParser {
             throw new IllegalArgumentException("empty input");
         }
 
-        final InputCommandType type = commandTypeMap.get(tokens.get(FIRST_ELEMENT_ID));
+        final InputCommandType type = commandTypeMap.get(tokens.get(FIRST_ELEMENT_ID).toLowerCase());
         if (type == null) {
             throw new IllegalArgumentException("unknown command");
         }
@@ -39,20 +46,30 @@ public class InputCommandParser {
 
     private InputCommand getCommand(final InputCommandType type, final ArrayList<String> args) throws Exception {
         switch (type) {
-            case ADDLIST:
+            case ADD_LIST:
                 return new AddListCommand(args);
-            case DELETELIST:
+            case DELETE_LIST:
                 return new DeleteListCommand(args);
-            case ADDTASK:
+            case ADD_TASK:
                 return new AddTaskCommand(args);
-            case DELETETASK:
+            case DELETE_TASK:
                 return new DeleteTaskCommand(args);
+            case EDIT_TASK_STATUS:
+                return new EditTaskStatusCommand(args);
+            case EDIT_TASK_TEXT:
+                return new EditTaskTextCommand(args);
+            case EDIT_LIST_NAME:
+                return new EditListNameCommand(args);
             case SHOW:
                 return new ShowCommand(args);
+            case HELP:
+                return new HelpCommand(args);
             case EXIT:
                 return new ExitCommand(args);
-            case EDITTASK:
-                return new EditTaskCommand(args);
+            case SAVE:
+                return new SaveCommand(args);
+            case IMPORT:
+                return new ImportCommand(args);
             default:
                 throw new Exception("default branch should be unreachable");
         }

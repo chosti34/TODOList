@@ -1,3 +1,7 @@
+package Command;
+
+import Task.TODOListManager;
+
 import java.util.ArrayList;
 
 public class ExitCommand extends InputCommand {
@@ -6,18 +10,18 @@ public class ExitCommand extends InputCommand {
     }
 
     @Override
-    public int getRequiredArgsCount() {
+    public int getMinRequiredArgsCount() {
+        return 0;
+    }
+
+    @Override
+    public int getMaxOptionalArgsCount() {
         return 0;
     }
 
     @Override
     public void execute(final TODOListManager.Controller controller) {
-        controller.exit();
-    }
-
-    @Override
-    public String getName() {
-        return "exit";
+        controller.onExit();
     }
 
     @Override
@@ -27,6 +31,5 @@ public class ExitCommand extends InputCommand {
 
     @Override
     protected void setArguments(final ArrayList<String> args) {
-        assert args.size() == getRequiredArgsCount();
     }
 }

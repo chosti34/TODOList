@@ -1,23 +1,27 @@
+package Task;
+
 import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> taskList;
+    private String name;
     private int id;
     private int taskIdToInsert;
 
-    public TaskList(int id) {
+    public TaskList(final String name, int id) {
         taskList = new ArrayList<>();
         this.id = id;
+        this.name = name;
         taskIdToInsert = 1;
     }
 
-    public void addTask(final String text) {
+    public boolean addTask(final String text) {
+        if (hasTaskWithText(text)) {
+            return false;
+        }
         taskList.add(new Task(taskIdToInsert, text));
         ++taskIdToInsert;
-    }
-
-    public void replaceTask(final String text, int taskId) {
-        taskList.add(new Task(taskId, text));
+        return true;
     }
 
     public boolean deleteTask(int taskId) {
@@ -36,33 +40,37 @@ public class TaskList {
         return false;
     }
 
-    public boolean removeTask(int taskId) {
-        int taskIndexToDelete = -1;
-        for (int i = 0; i < taskList.size(); ++i) {
-            Task task = taskList.get(i);
-            if (task.getId() == taskId) {
-                taskIndexToDelete = i;
-            }
-        }
-        if (taskIndexToDelete != -1) {
-            taskList.remove(taskIndexToDelete);
-            return true;
-        }
-        return false;
-    }
-
     public int getId() {
         return id;
     }
 
-    public void print() {
-        if (taskList.isEmpty()) {
-            System.out.println("<empty>");
-        }
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Task> toArrayList() {
+        return taskList;
+    }
+
+    public boolean hasTaskWithText(final String text) {
         for (Task task : taskList) {
-            System.out.println("Task " + task.getId() + ". Text: \"" + task.getText() +
-                    "\". Status: " + task.getStatus().toString() + ".");
+            if (task.getText().equals(text)) {
+                return true;
+            }
         }
-        System.out.println();
+        return false;
+    }
+
+    public Task getTask(int taskId) {
+        for (Task task : taskList) {
+            if (task.getId() == taskId) {
+                return task;
+            }
+        }
+        return null;
     }
 }
