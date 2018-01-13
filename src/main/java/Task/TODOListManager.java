@@ -280,9 +280,9 @@ public class TODOListManager {
                 fList = tempFile.listFiles();
                 System.out.println("Path not not exists. Created path: " + path);
             }
-            for(int i = 0; i < fList.length; i++)
+            for (int i = 0; i < fList.length; i++)
             {
-                if(fList[i].isFile()) {
+                if (fList[i].isFile()) {
                     try {
                         TaskList list = TaskListsReader.read(path +"/"+ fList[i].getName());
                         TaskList tmpName = isListExists(list.getName());
@@ -298,7 +298,7 @@ public class TODOListManager {
                 }
             }
             System.out.println("All task lists imported from " + path);
-            return  true;
+            return true;
         }
 
         public boolean importFromFile(final String path) {

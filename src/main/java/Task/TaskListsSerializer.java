@@ -40,7 +40,11 @@ public class TaskListsSerializer {
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
         DOMSource source = new DOMSource(document);
-        StreamResult result = new StreamResult(new File(filePath));
+
+        File file = new File(filePath);
+        file.getParentFile().mkdir();
+        file.createNewFile();
+        StreamResult result = new StreamResult(file);
 
         transformer.transform(source, result);
     }

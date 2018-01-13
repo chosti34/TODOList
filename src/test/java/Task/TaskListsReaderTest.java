@@ -27,6 +27,9 @@ public class TaskListsReaderTest {
 
     private void writeXmlData(final String filePath) throws Exception {
         File file = new File(filePath);
+        file.getParentFile().mkdir();
+        file.createNewFile();
+
         PrintStream stream = new PrintStream(file);
         stream.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
                 "<Root>\n" +
